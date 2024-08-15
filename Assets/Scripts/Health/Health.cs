@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class Health : MonoBehaviour {
@@ -10,6 +10,8 @@ public class Health : MonoBehaviour {
     private bool isAlive = true;
     private bool isInvulnerable = false;
     private float invulnerabilityDuration = 2f;
+
+    public event Action OnHealthChanged;
 
     private void Awake() {
         currentHealth = startingHealth;
@@ -28,11 +30,14 @@ public class Health : MonoBehaviour {
                 anim.SetTrigger("death");
                 GetComponent<PlayerController>().enabled = false;
             }
+
+            OnHealthChanged?.Invoke();
         }
     }
 
     public void AddHealth(float _value) {
         currentHealth = Mathf.Clamp(currentHealth + _value, 0, startingHealth);
+        OnHealthChanged?.Invoke();
     }
 
     public void Respawn() {
