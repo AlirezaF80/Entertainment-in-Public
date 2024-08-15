@@ -11,11 +11,11 @@ public class EnemySide : MonoBehaviour {
     private void Awake() {
         rb = GetComponent<Rigidbody2D>();
         coll = GetComponent<Collider2D>();
+        rb.simulated = false;
     }
 
     private void Update() {
-        if (isSeen || IsInCameraBounds()) {
-            isSeen = true;
+        if (rb.simulated || IsInCameraBounds()) {
             rb.velocity = new Vector2(-moveSpeed, rb.velocity.y);
         }
     }
@@ -28,8 +28,11 @@ public class EnemySide : MonoBehaviour {
             new Vector3(coll.bounds.max.x, coll.bounds.center.y, coll.bounds.center.z);
         Vector3 leftViewportPoint = Camera.main.WorldToViewportPoint(leftColliderPoint);
         Vector3 rightViewportPoint = Camera.main.WorldToViewportPoint(rightColliderPoint);
-        return leftViewportPoint.x > 0 && rightViewportPoint.x < 1 &&
-               leftViewportPoint.y > 0 && rightViewportPoint.y < 1;
+        var isInCameraBounds = leftViewportPoint.x > 0 && rightViewportPoint.x < 1 &&
+                               leftViewportPoint.y > 0 && rightViewportPoint.y < 1;
+        if (isInCameraBounds)
+            rb.simulated = true;
+        return isInCameraBounds;
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
