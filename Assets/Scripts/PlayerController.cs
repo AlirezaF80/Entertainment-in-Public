@@ -1,8 +1,6 @@
-using System.Collections;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
-{
+public class PlayerController : MonoBehaviour {
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float jumpForce = 10f;
     [SerializeField] private int maxJumps = 2;
@@ -19,16 +17,14 @@ public class PlayerController : MonoBehaviour
     public LayerMask groundLayer;
     private float attackCooldownTimer = 0f;
 
-    private void Awake()
-    {
+    private void Awake() {
         body = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         boxCollider = GetComponent<BoxCollider2D>();
         jumpsLeft = maxJumps;
     }
 
-    private void Update()
-    {
+    private void Update() {
         float horizontalInput = Input.GetAxis("Horizontal");
         body.velocity = new Vector2(horizontalInput * moveSpeed, body.velocity.y);
 
@@ -38,16 +34,10 @@ public class PlayerController : MonoBehaviour
             transform.localScale = new Vector3(-1, 1, 1);
 
         grounded = IsGrounded();
-        if (grounded)
-            jumpsLeft = maxJumps;
+        Debug.Log(grounded);
 
         if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (jumpsLeft > 0)
-                Jump();
-            else if (!grounded)
-                DoubleJump(); // Call DoubleJump when space is pressed and no regular jumps are left
-        }
+            Jump();
 
         if (Input.GetMouseButtonDown(0) && attackCooldownTimer <= 0)
             Attack();
@@ -59,76 +49,34 @@ public class PlayerController : MonoBehaviour
         anim.SetFloat("verticalSpeed", body.velocity.y);
     }
 
-    private void Jump()
-    {
-        if (grounded && jumpsLeft > 0)
-        {
-            if (jumpSound != null)
-            {
-                AudioSource.PlayClipAtPoint(jumpSound, transform.position);
-            }
+    private void Jump() {
+        if (!grounded) return;
+        if (jumpSound != null)
+            SoundManager.instance.PlaySound(jumpSound);
 
-            body.velocity = new Vector2(body.velocity.x, jumpForce);
-            anim.SetTrigger("jump");
-            jumpsLeft--;
-            Debug.LogError(jumpsLeft);
-        }
+        body.velocity = new Vector2(body.velocity.x, jumpForce);
+        anim.SetTrigger("jump");
     }
 
-    private void DoubleJump()
-    {
-        if (jumpsLeft == 1) // Only allow double jump when there's one regular jump left
-        {
-            if (jumpSound != null)
-            {
-                AudioSource.PlayClipAtPoint(jumpSound, transform.position);
-            }
-
-            body.velocity = new Vector2(body.velocity.x, jumpForce);
-            anim.SetTrigger("jump");
-            jumpsLeft--; // Decrement the regular jump count
-        }
+    private bool IsGrounded() {
+        RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center,
+            boxCollider.bounds.size, 0, Vector2.down, 0.02f, groundLayer);
+        return raycastHit.collider != null;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-            grounded = true;
-        jumpsLeft = maxJumps;
+    private void OnDrawGizmos() {
+        Gizmos.DrawCube(boxCollider.bounds.size, boxCollider.bounds.size);
     }
 
-    private bool IsGrounded()
-    {
-        RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0, Vector2.down, 0.01f, groundLayer);
-        if (raycastHit.collider != null)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-
-    }
-    private void Attack()
-    {
-        if (SoundManager.instance == null)
-        {
-            Debug.LogError("SoundManager instance is null");
-            return;
-        }
-
-        if (anim == null)
-        {
+    private void Attack() {
+        if (anim == null) {
             Debug.LogError("Animator is null");
             return;
         }
-        if (attackSound != null)
-        {
-            AudioSource.PlayClipAtPoint(attackSound, transform.position);
-        }
 
-        // Proceed with attack logic
+        if (SoundManager.instance != null)
+            SoundManager.instance.PlaySound(attackSound);
+
         attackCooldownTimer = attackCooldown;
         anim.SetTrigger("attack");
     }
