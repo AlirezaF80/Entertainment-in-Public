@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private Animator anim;
     [SerializeField] private AudioClip attackSound;
     [SerializeField] private AudioClip jumpSound;
+    [SerializeField] private float coyoteTime;
 
     private Rigidbody2D body;
     private bool grounded;
@@ -16,6 +17,7 @@ public class PlayerController : MonoBehaviour {
     private BoxCollider2D boxCollider;
     public LayerMask groundLayer;
     private float attackCooldownTimer = 0f;
+    private float lastGroundedTime;
 
     private void Awake() {
         body = GetComponent<Rigidbody2D>();
@@ -34,7 +36,11 @@ public class PlayerController : MonoBehaviour {
             transform.localScale = new Vector3(-1, 1, 1);
 
         grounded = IsGrounded();
-        Debug.Log(grounded);
+        if (grounded)
+            lastGroundedTime = Time.time;
+
+        Debug.Log(
+            $"[PlayerController]: grounded: {grounded}, lastGroundedTime: {lastGroundedTime}");
 
         if (Input.GetKeyDown(KeyCode.Space))
             Jump();
@@ -50,12 +56,16 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void Jump() {
-        if (!grounded) return;
+        if (!grounded && !HasCoyoteTime()) return;
         if (jumpSound != null)
             SoundManager.instance.PlaySound(jumpSound);
 
         body.velocity = new Vector2(body.velocity.x, jumpForce);
         anim.SetTrigger("jump");
+    }
+
+    private bool HasCoyoteTime() {
+        return Time.time - lastGroundedTime > coyoteTime;
     }
 
     private bool IsGrounded() {

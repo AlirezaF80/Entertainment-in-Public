@@ -6523,6 +6523,7 @@ MonoBehaviour:
   anim: {fileID: 1533383777}
   attackSound: {fileID: 8300000, guid: c36dec3d536534e058fe7f23ea66aacc, type: 3}
   jumpSound: {fileID: 8300000, guid: d09bdf0753d9343419412b44c3224d07, type: 3}
+  coyoteTime: 0.15
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
