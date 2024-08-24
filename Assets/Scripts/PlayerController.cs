@@ -64,7 +64,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     private bool HasCoyoteTime() {
-        return Time.time - lastGroundedTime > coyoteTime;
+        return Time.time - lastGroundedTime <= coyoteTime;
     }
 
     private bool IsGrounded() {
