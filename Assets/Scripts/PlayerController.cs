@@ -28,31 +28,30 @@ public class PlayerController : MonoBehaviour {
 
     private void Update() {
         float horizontalInput = Input.GetAxis("Horizontal");
+        HandleHorizontalInput(horizontalInput);
+        anim.SetBool("walk", horizontalInput != 0);
+
+        grounded = IsGrounded();
+        if (grounded)
+            lastGroundedTime = Time.time;
+        if (Input.GetKeyDown(KeyCode.Space))
+            Jump();
+        anim.SetBool("grounded", grounded);
+        anim.SetFloat("verticalSpeed", body.velocity.y);
+
+        if (Input.GetMouseButtonDown(0) && attackCooldownTimer <= 0)
+            Attack();
+        attackCooldownTimer -= Time.deltaTime;
+    }
+
+    private float HandleHorizontalInput(float horizontalInput) {
         body.velocity = new Vector2(horizontalInput * moveSpeed, body.velocity.y);
 
         if (horizontalInput > 0.01f)
             transform.localScale = Vector3.one;
         else if (horizontalInput < -0.01f)
             transform.localScale = new Vector3(-1, 1, 1);
-
-        grounded = IsGrounded();
-        if (grounded)
-            lastGroundedTime = Time.time;
-
-        Debug.Log(
-            $"[PlayerController]: grounded: {grounded}, lastGroundedTime: {lastGroundedTime}");
-
-        if (Input.GetKeyDown(KeyCode.Space))
-            Jump();
-
-        if (Input.GetMouseButtonDown(0) && attackCooldownTimer <= 0)
-            Attack();
-
-        attackCooldownTimer -= Time.deltaTime;
-
-        anim.SetBool("walk", horizontalInput != 0);
-        anim.SetBool("grounded", grounded);
-        anim.SetFloat("verticalSpeed", body.velocity.y);
+        return horizontalInput;
     }
 
     private void Jump() {

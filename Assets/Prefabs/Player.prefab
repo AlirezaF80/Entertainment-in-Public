@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 7590709362986242816}
   - component: {fileID: 7590709362986242817}
   - component: {fileID: 7590709362986242822}
-  - component: {fileID: 7590709362986242823}
   - component: {fileID: 7590709362986242818}
   - component: {fileID: 7590709362986242877}
+  - component: {fileID: 4450459748727283731}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -75,10 +75,10 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 2028707715
+  m_SortingLayer: 2
   m_SortingOrder: 2
-  m_Sprite: {fileID: -625552095, guid: 3744e90df5e494860a5897e28f99b9e2, type: 3}
+  m_Sprite: {fileID: -1276054778, guid: ef3dbf40bd36046428405d12ade98bef, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -123,41 +123,19 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0805572, y: -0.0762469}
+  m_Offset: {x: -0.023695946, y: 0.03368491}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.48, y: 0.48}
+    oldSize: {x: 0.748538, y: 0.749269}
     newSize: {x: 0.48, y: 0.48}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.16421583, y: 0.3102651}
+  m_Size: {x: 0.22234064, y: 0.6160524}
   m_EdgeRadius: 0
---- !u!114 &7590709362986242823
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7590709362986242820}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48bafd60a10344528bf27f0816ad8806, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 2.5
-  jumpForce: 6
-  maxJumps: 2
-  projectilePrefab: {fileID: 0}
-  attackCooldown: 0
-  anim: {fileID: 0}
-  attAud: {fileID: 8300000, guid: 495159dc1535d473182c2100f2ec5033, type: 3}
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
 --- !u!95 &7590709362986242818
 Animator:
   serializedVersion: 5
@@ -168,7 +146,7 @@ Animator:
   m_GameObject: {fileID: 7590709362986242820}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: b3757456f6f374db68c07c2ef074f9b4, type: 2}
+  m_Controller: {fileID: 9100000, guid: 3092ac4172323b54ab99e323f7c897f3, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -191,6 +169,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad0120daaf6d34e33adacd176ef9dcdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingHealth: 5
-  currentHealth: 5
+  startingHealth: 3
+  currentHealth: 3
   anim: {fileID: 0}
+--- !u!114 &4450459748727283731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7590709362986242820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7cb5e16f87d54e6bbe2de385507d033, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 1.5
+  jumpForce: 5
+  maxJumps: 1
+  projectilePrefab: {fileID: 0}
+  attackCooldown: 0.5
+  anim: {fileID: 7590709362986242818}
+  attackSound: {fileID: 8300000, guid: c36dec3d536534e058fe7f23ea66aacc, type: 3}
+  jumpSound: {fileID: 8300000, guid: d09bdf0753d9343419412b44c3224d07, type: 3}
+  coyoteTime: 0.15
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
