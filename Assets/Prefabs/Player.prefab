@@ -184,8 +184,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7cb5e16f87d54e6bbe2de385507d033, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1.5
-  jumpForce: 5
+  moveSpeed: 1.6
+  jumpForce: 6
   maxJumps: 1
   projectilePrefab: {fileID: 0}
   attackCooldown: 0.5
