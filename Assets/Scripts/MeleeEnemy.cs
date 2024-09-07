@@ -6,7 +6,6 @@ public class MeleeEnemy : MonoBehaviour {
     [SerializeField] BoxCollider2D boxCollider;
     [SerializeField] LayerMask playerLayer;
     [SerializeField] float range;
-    [SerializeField] float colliderDistance;
     [SerializeField] float moveSpeed;
 
     private enum State {
@@ -35,6 +34,9 @@ public class MeleeEnemy : MonoBehaviour {
         FacePlayer();
         coolDownTimer += Time.deltaTime;
 
+        var canAttackPlayer = CanAttackPlayer();
+        anim.SetBool(MovingAnimatorHash, !canAttackPlayer);
+
         switch (currentState) {
             case State.Idle:
                 anim.SetBool(MovingAnimatorHash, false);
@@ -46,17 +48,12 @@ public class MeleeEnemy : MonoBehaviour {
                 break;
 
             case State.Chase:
-                if (CanAttackPlayer()) {
-                    currentState = State.Attack;
-                } else {
-                    ChasePlayer();
-                    anim.SetBool(MovingAnimatorHash, true);
-                }
-
+                if (canAttackPlayer) currentState = State.Attack;
+                else ChasePlayer();
                 break;
 
             case State.Attack:
-                if (CanAttackPlayer()) {
+                if (canAttackPlayer) {
                     var isAttackCooldownOver = coolDownTimer >= attackCoolDown;
                     if (isAttackCooldownOver) {
                         coolDownTimer = 0;
@@ -83,14 +80,16 @@ public class MeleeEnemy : MonoBehaviour {
 
     private bool CanAttackPlayer() {
         var bounds = boxCollider.bounds;
-        RaycastHit2D hit = Physics2D.BoxCast(
-            bounds.center + transform.right * (range * transform.localScale.x),
-            new Vector3(bounds.size.x * range, bounds.size.y, bounds.size.z),
-            0, Vector2.left, 0, playerLayer);
+        RaycastHit2D hit = Physics2D.Raycast(
+            bounds.center,
+            (Vector2.right * transform.localScale.x).normalized,
+            (bounds.size.x / 2 + range) * Mathf.Abs(transform.localScale.x),
+            playerLayer);
 
-        if (hit.collider != null)
+        var hasSeenPlayer = hit.collider != null && hit.transform.CompareTag("Player");
+        if (hasSeenPlayer)
             playerHealth = hit.transform.GetComponent<Health>();
-        return hit.collider != null;
+        return hasSeenPlayer;
     }
 
     private void ChasePlayer() {
@@ -104,10 +103,6 @@ public class MeleeEnemy : MonoBehaviour {
     private void OnDrawGizmos() {
         Gizmos.color = Color.red;
         var bounds = boxCollider.bounds;
-        // show the range of the enemy with a line
-        Gizmos.DrawLine(
-            bounds.center + transform.right * (range * transform.localScale.x * colliderDistance),
-            bounds.center + transform.right * (range * transform.localScale.x * colliderDistance) +
-            Vector3.left * bounds.size.x * range);
+        Gizmos.DrawRay(bounds.center, Vector2.right * transform.localScale.x * (bounds.size.x / 2 + range));
     }
 }

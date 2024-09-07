@@ -73,10 +73,6 @@ public class PlayerController : MonoBehaviour {
         return raycastHit.collider != null;
     }
 
-    private void OnDrawGizmos() {
-        Gizmos.DrawCube(boxCollider.bounds.size, boxCollider.bounds.size);
-    }
-
     private void Attack() {
         if (anim == null) {
             Debug.LogError("Animator is null");
