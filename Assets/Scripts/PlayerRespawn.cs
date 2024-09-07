@@ -6,7 +6,7 @@ public class PlayerRespawn : MonoBehaviour
 {
     [SerializeField] private AudioClip checkPointAudio;
     private Transform currentCheckPoint;
-    private Health playerHealth;
+    private PlayerHealth playerPlayerHealth;
     private UIManager uiManager;
     private PlayerController playerController;
     [SerializeField] private Animator anim;
@@ -14,7 +14,7 @@ public class PlayerRespawn : MonoBehaviour
 
     private void Awake()
     {
-        playerHealth = GetComponent<Health>();
+        playerPlayerHealth = GetComponent<PlayerHealth>();
         uiManager = FindObjectOfType<UIManager>();
         playerController = GetComponent<PlayerController>();
         anim = GetComponent<Animator>();
@@ -36,7 +36,7 @@ public class PlayerRespawn : MonoBehaviour
         }
 
         transform.position = currentCheckPoint.position;
-        playerHealth.Respawn();
+        playerPlayerHealth.Respawn();
         //Camera.main.GetComponent<CameraController>().MoveToNewRoom(currentCheckPoint.parent);
     }
 

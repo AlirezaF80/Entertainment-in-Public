@@ -2,41 +2,41 @@ using System.Collections;
 using System;
 using UnityEngine;
 
-public class Health : MonoBehaviour {
+public class PlayerHealth : MonoBehaviour {
     [SerializeField] private float startingHealth;
-    public float currentHealth;
     [SerializeField] private Animator anim;
 
     private bool isAlive = true;
-    private bool isInvulnerable = false;
+    private bool isInvulnerable;
     private float invulnerabilityDuration = 2f;
+
+    public float CurrentHealth { get; private set; }
 
     public event Action OnHealthChanged;
 
     private void Awake() {
-        currentHealth = startingHealth;
+        CurrentHealth = startingHealth;
         anim = GetComponent<Animator>();
     }
 
-    public void TakeDamage(float _damage) {
-        if (!isInvulnerable) {
-            currentHealth = currentHealth - _damage;
+    public void TakeDamage(float damage) {
+        if (isInvulnerable) return;
+        CurrentHealth -= damage;
 
-            if (currentHealth > 0) {
-                anim.SetTrigger("damage");
-                StartCoroutine(InvulnerabilityTimer());
-            } else if (isAlive) {
-                isAlive = false;
-                anim.SetTrigger("death");
-                GetComponent<PlayerController>().enabled = false;
-            }
-
-            OnHealthChanged?.Invoke();
+        if (CurrentHealth > 0) {
+            anim.SetTrigger("damage");
+            StartCoroutine(InvulnerabilityTimer());
+        } else if (isAlive) {
+            isAlive = false;
+            anim.SetTrigger("death");
+            GetComponent<PlayerController>().enabled = false;
         }
+
+        OnHealthChanged?.Invoke();
     }
 
-    public void AddHealth(float _value) {
-        currentHealth = Mathf.Clamp(currentHealth + _value, 0, startingHealth);
+    public void AddHealth(float value) {
+        CurrentHealth = Mathf.Clamp(CurrentHealth + value, 0, startingHealth);
         OnHealthChanged?.Invoke();
     }
 
