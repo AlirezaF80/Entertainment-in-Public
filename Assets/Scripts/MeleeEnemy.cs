@@ -13,7 +13,7 @@ public class MeleeEnemy : MonoBehaviour {
     private float coolDownTimer = Mathf.Infinity;
 
     private Animator anim;
-    private PlayerHealth playerHealth;
+    private Health playerHealth;
 
 
     private void Awake() {
@@ -23,7 +23,7 @@ public class MeleeEnemy : MonoBehaviour {
     private void Update() {
         coolDownTimer += Time.deltaTime;
 
-        if (IsPlayerInSight()) {
+        if (IsPlayerClose()) {
             if (coolDownTimer >= attackCoolDown) {
                 coolDownTimer = 0;
                 anim.SetTrigger("meleeAttack");
@@ -32,17 +32,18 @@ public class MeleeEnemy : MonoBehaviour {
     }
 
     public void DamagePlayer() {
-        if (playerHealth != null) playerHealth.TakeDamage(damageAmount);
+        if (IsPlayerClose() && playerHealth != null) playerHealth.TakeDamage(damageAmount);
     }
 
-    private bool IsPlayerInSight() {
+    private bool IsPlayerClose() {
+        var bounds = boxCollider.bounds;
         RaycastHit2D hit = Physics2D.BoxCast(
-            boxCollider.bounds.center + transform.right * range * transform.localScale.x * colliderDistance,
-            new Vector3(boxCollider.bounds.size.x * range, boxCollider.bounds.size.y, boxCollider.bounds.size.z),
+            bounds.center + transform.right * (range * transform.localScale.x * colliderDistance),
+            new Vector3(bounds.size.x * range, bounds.size.y, bounds.size.z),
             0, Vector2.left, 0, playerlayer);
 
         if (hit.collider != null)
-            playerHealth = hit.transform.GetComponent<PlayerHealth>();
+            playerHealth = hit.transform.GetComponent<Health>();
         return hit.collider != null;
     }
 

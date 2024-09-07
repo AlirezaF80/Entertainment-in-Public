@@ -22,8 +22,8 @@ public class HeadEnemy : MonoBehaviour {
 
     private void OnCollisionEnter2D(Collision2D collision) {
         // Check if collision is with the player
-        if (collision.gameObject.GetComponent<PlayerHealth>()) {
-            collision.gameObject.GetComponent<PlayerHealth>().TakeDamage(damage);
+        if (collision.gameObject.GetComponent<Health>()) {
+            collision.gameObject.GetComponent<Health>().TakeDamage(damage);
         }
     }
 }
