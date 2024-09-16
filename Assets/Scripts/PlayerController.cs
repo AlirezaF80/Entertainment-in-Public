@@ -18,12 +18,24 @@ public class PlayerController : MonoBehaviour {
     public LayerMask groundLayer;
     private float attackCooldownTimer = 0f;
     private float lastGroundedTime;
+    private Health health;
 
     private void Awake() {
         body = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         boxCollider = GetComponent<BoxCollider2D>();
         jumpsLeft = maxJumps;
+        health = GetComponent<Health>();
+        health.OnHealthChanged += OnHealthChanged;
+    }
+
+    private void OnHealthChanged(float currentHealth) {
+        if (currentHealth > 0) {
+            anim.SetTrigger("damage");
+        } else {
+            anim.SetTrigger("death");
+            this.enabled = false;
+        }
     }
 
     private void Update() {
@@ -84,5 +96,12 @@ public class PlayerController : MonoBehaviour {
 
         attackCooldownTimer = attackCooldown;
         anim.SetTrigger("attack");
+    }
+
+    public void Respawn() {
+        anim.ResetTrigger("death");
+        anim.Play("Idle");
+        this.enabled = true;
+        health.Respawn();
     }
 }

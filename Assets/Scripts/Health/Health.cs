@@ -12,7 +12,7 @@ public class Health : MonoBehaviour {
 
     public float CurrentHealth { get; private set; }
 
-    public event Action OnHealthChanged;
+    public event Action<float> OnHealthChanged;
 
     private void Awake() {
         CurrentHealth = startingHealth;
@@ -24,28 +24,22 @@ public class Health : MonoBehaviour {
         CurrentHealth -= damage;
 
         if (CurrentHealth > 0) {
-            anim.SetTrigger("damage");
             StartCoroutine(InvulnerabilityTimer());
         } else if (isAlive) {
             isAlive = false;
-            anim.SetTrigger("death");
-            GetComponent<PlayerController>().enabled = false;
         }
 
-        OnHealthChanged?.Invoke();
+        OnHealthChanged?.Invoke(CurrentHealth);
     }
 
     public void AddHealth(float value) {
         CurrentHealth = Mathf.Clamp(CurrentHealth + value, 0, startingHealth);
-        OnHealthChanged?.Invoke();
+        OnHealthChanged?.Invoke(CurrentHealth);
     }
 
     public void Respawn() {
         isAlive = true;
-        AddHealth(startingHealth);
-        anim.ResetTrigger("death");
-        anim.Play("Idle");
-        GetComponent<PlayerController>().enabled = true;
+        CurrentHealth = startingHealth;
     }
 
     IEnumerator InvulnerabilityTimer() {

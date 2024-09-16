@@ -3,6 +3,7 @@ using UnityEngine;
 public class HeadEnemy : MonoBehaviour {
     [SerializeField] private float damage;
     [SerializeField] private float moveSpeed;
+    [SerializeField] private bool moveWhenInCamera = true;
 
     private Rigidbody2D rb;
     private Collider2D coll;
@@ -14,10 +15,9 @@ public class HeadEnemy : MonoBehaviour {
     }
 
     private void Update() {
-        rb.simulated = coll.IsInCameraBounds();
-        if (rb.simulated) {
+        rb.simulated = !moveWhenInCamera || coll.IsInCameraBounds();
+        if (rb.simulated)
             rb.velocity = new Vector2(-moveSpeed, rb.velocity.y);
-        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {

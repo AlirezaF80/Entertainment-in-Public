@@ -11,7 +11,8 @@ public class MeleeEnemy : MonoBehaviour {
     private enum State {
         Idle,
         Chase,
-        Attack
+        Attack,
+        Dead
     }
 
     private State currentState = State.Idle;
@@ -23,14 +24,27 @@ public class MeleeEnemy : MonoBehaviour {
     private Animator anim;
     private Health playerHealth;
     private Transform player;
+    private Health myHealth;
 
     private void Awake() {
         anim = GetComponent<Animator>();
         initialScale = transform.localScale;
         player = FindObjectOfType<PlayerController>().transform;
+        myHealth = GetComponent<Health>();
+        myHealth.OnHealthChanged += OnHealthChanged;
+    }
+
+    private void OnHealthChanged(float currentHealth) {
+        if (currentHealth > 0) {
+            anim.SetTrigger("damage");
+        } else {
+            currentState = State.Dead;
+            anim.SetTrigger("death");
+        }
     }
 
     private void Update() {
+        if (currentState == State.Dead) return;
         FacePlayer();
         coolDownTimer += Time.deltaTime;
 

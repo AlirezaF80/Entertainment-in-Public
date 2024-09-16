@@ -182,7 +182,7 @@ GameObject:
   - component: {fileID: 4238323221144051690}
   - component: {fileID: 6442644686955576500}
   m_Layer: 8
-  m_Name: Skull
+  m_Name: Skull - Always Move
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -239,9 +239,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 292a56f8b88b043dc9d5be8f62aff222, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 1
-  moveSpeed: 0.5
-  moveWhenInCamera: 1
+  damage: 0.5
+  moveSpeed: 1
+  moveWhenInCamera: 0
 --- !u!58 &4238323221144051690
 CircleCollider2D:
   m_ObjectHideFlags: 0
