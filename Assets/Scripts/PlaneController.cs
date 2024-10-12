@@ -1,25 +1,17 @@
-using System;
+﻿using System;
 using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
-public class CrowController : MonoBehaviour {
-    [SerializeField] private Animator animator;
+public class PlaneController : MonoBehaviour {
     [SerializeField] private float flyHeight = 5;
     [SerializeField] private float flyWidth = 1;
     [SerializeField] private float flySpeed = 5;
     [SerializeField] private float delayBeforeFly = 0.25f;
     [SerializeField] private AnimationCurve flyCurve;
 
-    private void Awake() {
-        // Face random direction
-        var randomDirection = UnityEngine.Random.Range(0, 2);
-        transform.localScale = new Vector3(randomDirection == 0 ? 1 : -1, 1, 1);
-    }
-
     private void OnTriggerEnter2D(Collider2D other) {
         if (!other.GetComponent<PlayerController>()) return;
-        animator.SetBool("idle", false);
         StartCoroutine(Fly());
     }
 

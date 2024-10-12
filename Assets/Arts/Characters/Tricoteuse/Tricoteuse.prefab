@@ -49,6 +49,7 @@ MonoBehaviour:
   talkCountName: talkCount
   talkCountRange: {x: 1, y: 4}
   talkAnimDelayRange: {x: 2, y: 6}
+  talkAnimDuration: 0.5
 --- !u!1 &7138386802295326467
 GameObject:
   m_ObjectHideFlags: 0
