@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
@@ -14,11 +15,13 @@ public class UIManager : MonoBehaviour
     
     private PlayerController playerController;
     private bool isGameOver;
+    private EventSystem eventSystem;
 
     private void Awake()
     {
         playerController = FindObjectOfType<PlayerController>();
         PauseScreen.SetActive(false);
+        eventSystem = GetComponentInChildren<EventSystem>();
     }
 
     private void Update() {
@@ -38,6 +41,7 @@ public class UIManager : MonoBehaviour
         gameOverButtons.SetActive(true);
         yield return new WaitForSeconds(delay);
         PauseScreen.SetActive(true);
+        eventSystem.SetSelectedGameObject(gameOverButtons[^1]);
         Time.timeScale = 0;
     }
 
@@ -67,6 +71,7 @@ public class UIManager : MonoBehaviour
         gameOverButtons.SetActive(false);
         pauseButtons.SetActive(true);
         PauseScreen.SetActive(status);
+        eventSystem.SetSelectedGameObject(pauseButtons[^1]);
         Time.timeScale = status ? 0 : 1;
     }
 
