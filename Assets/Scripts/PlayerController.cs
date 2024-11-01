@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour {
         grounded = IsGrounded();
         if (grounded)
             lastGroundedTime = Time.time;
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetButtonDown("Jump"))
             Jump();
         anim.SetBool("grounded", grounded);
         anim.SetFloat("verticalSpeed", body.velocity.y);

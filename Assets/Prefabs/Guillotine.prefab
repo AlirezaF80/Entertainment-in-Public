@@ -116,6 +116,18 @@ MonoBehaviour:
   minAngle: -10
   maxAngle: 10
   spawnPoint: {fileID: 760981916813376226}
+  playerDetectionRadius: 5
+  hoveringParts:
+  - {fileID: 1719666166647841436}
+  - {fileID: 5049745592883989730}
+  - {fileID: 9066339332025333451}
+  - {fileID: 125264353064060611}
+  - {fileID: 7889374210109462299}
+  - {fileID: 7839887535640259110}
+  - {fileID: 5541026007435824902}
+  hoverRotationRange: 3
+  hoverFullRotationDuration: 10
+  hoverRotationOffset: 1.3
 --- !u!1 &760981917571344748
 GameObject:
   m_ObjectHideFlags: 0

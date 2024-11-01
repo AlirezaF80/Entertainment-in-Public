@@ -1,10 +1,12 @@
 using System.Collections;
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Health : MonoBehaviour {
     [SerializeField] private float startingHealth;
     [SerializeField] private Animator anim;
+    [SerializeField] private UnityEvent onDeath;
 
     private bool isAlive = true;
     private bool isInvulnerable;
@@ -27,6 +29,7 @@ public class Health : MonoBehaviour {
             StartCoroutine(InvulnerabilityTimer());
         } else if (isAlive) {
             isAlive = false;
+            onDeath?.Invoke();
         }
 
         OnHealthChanged?.Invoke(CurrentHealth);

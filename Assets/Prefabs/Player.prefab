@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7590709362986242818}
   - component: {fileID: 7590709362986242877}
   - component: {fileID: 4450459748727283731}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -171,6 +171,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingHealth: 3
   anim: {fileID: 7590709362986242818}
+  onDeath:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &4450459748727283731
 MonoBehaviour:
   m_ObjectHideFlags: 0
