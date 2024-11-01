@@ -22,8 +22,7 @@ public class Guillotine : MonoBehaviour {
     }
 
     public void SpawnObstacle() {
-        if (isDismantled) return;
-        if (!IsPlayerNearby()) return;
+        if (isDismantled || !IsPlayerNearby()) return;
         var randomRotationFactor = Random.Range(0f, 1f);
         var randomAngle = Mathf.Lerp(minAngle, maxAngle, randomRotationFactor);
         var randomRotation = Quaternion.Euler(0f, 0f, randomAngle);

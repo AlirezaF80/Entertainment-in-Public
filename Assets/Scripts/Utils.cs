@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public static class Utils {
     public static bool IsInCameraBounds(this Collider2D coll) {
@@ -16,5 +17,11 @@ public static class Utils {
 
     public static Vector3 With(this Vector3 vector, float? x = null, float? y = null, float? z = null) {
         return new Vector3(x ?? vector.x, y ?? vector.y, z ?? vector.z);
+    }
+    
+    public static void SetActive(this IEnumerable<GameObject> gameObjects, bool active) {
+        foreach (var go in gameObjects) {
+            go.SetActive(active);
+        }
     }
 }

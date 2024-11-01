@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
@@ -97,10 +99,18 @@ public class PlayerController : MonoBehaviour {
         anim.SetTrigger("attack");
     }
 
-    public void Respawn() {
-        anim.ResetTrigger("death");
-        anim.Play("Idle");
-        this.enabled = true;
-        health.Respawn();
+    public void GameOver() {
+        enabled = false;
+        StartCoroutine(GameOverRoutine());
+    }
+
+    private IEnumerator GameOverRoutine() {
+        while (!IsGrounded()) {
+            yield return null;
+        }
+
+        GetComponent<Rigidbody2D>().simulated = false;
+        GetComponent<Collider2D>().enabled = false;
+        anim.SetTrigger("death");
     }
 }

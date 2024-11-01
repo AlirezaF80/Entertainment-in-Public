@@ -1,49 +1,44 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
     [Header ("Game Over")]
-    [SerializeField] private GameObject gameOverScreen;
     [SerializeField] private AudioClip gameOverSound;
     [Header("Pause")]
     [SerializeField] private GameObject PauseScreen;
 
-    [SerializeField] private GameObject gameOverDefaultButton;
-    [SerializeField] private GameObject pauseDefaultButton;
+    [SerializeField] private GameObject[] gameOverButtons;
+    [SerializeField] private GameObject[] pauseButtons;
     
     private PlayerController playerController;
-    private EventSystem eventSystem;
+    private bool isGameOver;
 
     private void Awake()
     {
         playerController = FindObjectOfType<PlayerController>();
-        eventSystem = GetComponentInChildren<EventSystem>();
-        gameOverScreen.SetActive(false);
         PauseScreen.SetActive(false);
     }
 
-    private void Update()
-    {
-        if (Input.GetButtonDown("Pause")) {
+    private void Update() {
+        if (Input.GetButtonDown("Pause") && !isGameOver) {
             PauseGame(!IsPaused());
         }
     }
     #region Game Over
-    public void GameOver(float delay = 0)
-    {
+    public void GameOver(float delay = 0) {
+        isGameOver = true;
         StartCoroutine(GameOverRoutine(delay));
     }
 
     private IEnumerator GameOverRoutine(float delay) {
-        playerController.enabled = false;
+        playerController.GameOver();
+        pauseButtons.SetActive(false);
+        gameOverButtons.SetActive(true);
         yield return new WaitForSeconds(delay);
+        PauseScreen.SetActive(true);
         Time.timeScale = 0;
-        eventSystem.SetSelectedGameObject(gameOverScreen);
-        gameOverScreen.SetActive(true);
     }
 
     public void Restart()
@@ -69,8 +64,9 @@ public class UIManager : MonoBehaviour
     #endregion
 
     public void PauseGame(bool status) {
+        gameOverButtons.SetActive(false);
+        pauseButtons.SetActive(true);
         PauseScreen.SetActive(status);
-        eventSystem.SetSelectedGameObject(pauseDefaultButton);
         Time.timeScale = status ? 0 : 1;
     }
 
