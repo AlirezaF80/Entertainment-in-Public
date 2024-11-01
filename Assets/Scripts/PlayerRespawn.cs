@@ -1,58 +1,48 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
-public class PlayerRespawn : MonoBehaviour
-{
-    [SerializeField] private AudioClip checkPointAudio;
-    private Transform currentCheckPoint;
-    private Health health;
-    private UIManager uiManager;
+public class PlayerRespawn : MonoBehaviour {
+    [SerializeField] private float delayBeforeRespawn = 2f;
+    [SerializeField] private Transform[] checkPoints;
+
+    private float maxReachedX;
+
     private PlayerController playerController;
-    [SerializeField] private Animator anim;
+    private Health health;
 
-
-    private void Awake()
-    {
+    private void Awake() {
         health = GetComponent<Health>();
-        uiManager = FindObjectOfType<UIManager>();
+        // uiManager = FindObjectOfType<UIManager>();
         playerController = GetComponent<PlayerController>();
-        anim = GetComponent<Animator>();
+        // Sort checkpoints by x ascending
+        Array.Sort(checkPoints, (a, b) => a.position.x.CompareTo(b.position.x));
     }
 
-    public void Respawn()
-    {
+    public void Respawn() {
+        playerController.enabled = true;
 
-        //if(currentCheckPoint == null)
-        //{
-        //uiManager.GameOver();
-        //return;
-        //}
-
-        if (currentCheckPoint == null)
-        {
-            Die(); // Call Die() if no checkpoint
-            return;
-        }
-
-        transform.position = currentCheckPoint.position;
+        transform.position = GetLastCheckpoint().position;
         health.Respawn();
-        //Camera.main.GetComponent<CameraController>().MoveToNewRoom(currentCheckPoint.parent);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.transform.tag == "CheckPoint")
-        {
-            currentCheckPoint = collision.transform;
-            SoundManager.instance.PlaySound(checkPointAudio);
-            collision.GetComponent<Collider2D>().enabled = false;
-            collision.GetComponent<Animator>().SetTrigger("Enter");
+    private void FixedUpdate() {
+        maxReachedX = Mathf.Max(maxReachedX, playerController.transform.position.x);
+    }
+
+    private Transform GetLastCheckpoint() {
+        Transform lastCheckPoint = checkPoints[0];
+        foreach (var checkPoint in checkPoints) {
+            if (maxReachedX > checkPoint.position.x) {
+                lastCheckPoint = checkPoint;
+            }
         }
+
+        return lastCheckPoint;
     }
 
-    private void Die()
-    {
-        anim.SetTrigger("death");
+    private void Die() {
         playerController.enabled = false; // Disable player controller
-        uiManager.GameOver(); // Optionally display game over screen
+        Invoke(nameof(Respawn), delayBeforeRespawn);
     }
 }

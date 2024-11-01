@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 7590709362986242818}
   - component: {fileID: 7590709362986242877}
   - component: {fileID: 4450459748727283731}
+  - component: {fileID: 5624047117033013424}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -188,8 +189,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 1.6
   jumpForce: 6
-  maxJumps: 1
-  projectilePrefab: {fileID: 0}
   attackCooldown: 0.5
   anim: {fileID: 7590709362986242818}
   attackSound: {fileID: 8300000, guid: c36dec3d536534e058fe7f23ea66aacc, type: 3}
@@ -198,3 +197,17 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
+--- !u!114 &5624047117033013424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7590709362986242820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 271c493d7fde2456da3dd88fd178b5b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delayBeforeRespawn: 2
+  checkPoints: []

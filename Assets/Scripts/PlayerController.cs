@@ -28,12 +28,12 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void OnHealthChanged(float currentHealth) {
-        if (currentHealth > 0) {
+        if (currentHealth > 0) //{
             anim.SetTrigger("damage");
-        } else {
-            anim.SetTrigger("death");
-            this.enabled = false;
-        }
+        // } else {
+            // anim.SetTrigger("death");
+            // this.enabled = false;
+        // }
     }
 
     private void Update() {

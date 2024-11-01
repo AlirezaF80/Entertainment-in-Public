@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
@@ -10,12 +11,17 @@ public class UIManager : MonoBehaviour
     [SerializeField] private AudioClip gameOverSound;
     [Header("Pause")]
     [SerializeField] private GameObject PauseScreen;
+
+    [SerializeField] private GameObject gameOverDefaultButton;
+    [SerializeField] private GameObject pauseDefaultButton;
     
     private PlayerController playerController;
+    private EventSystem eventSystem;
 
     private void Awake()
     {
         playerController = FindObjectOfType<PlayerController>();
+        eventSystem = GetComponentInChildren<EventSystem>();
         gameOverScreen.SetActive(false);
         PauseScreen.SetActive(false);
     }
@@ -32,11 +38,11 @@ public class UIManager : MonoBehaviour
         StartCoroutine(GameOverRoutine(delay));
     }
 
-    private IEnumerator GameOverRoutine(float delay)
-    {
+    private IEnumerator GameOverRoutine(float delay) {
         playerController.enabled = false;
         yield return new WaitForSeconds(delay);
         Time.timeScale = 0;
+        eventSystem.SetSelectedGameObject(gameOverScreen);
         gameOverScreen.SetActive(true);
     }
 
@@ -64,6 +70,7 @@ public class UIManager : MonoBehaviour
 
     public void PauseGame(bool status) {
         PauseScreen.SetActive(status);
+        eventSystem.SetSelectedGameObject(pauseDefaultButton);
         Time.timeScale = status ? 0 : 1;
     }
 
