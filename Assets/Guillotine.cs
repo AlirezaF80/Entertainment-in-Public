@@ -43,7 +43,7 @@ public class Guillotine : MonoBehaviour {
     }
 
     private IEnumerator AnimatePartsHovering() {
-        // They should rotate from hoverRotationRange.x to hoverRotationRange.y, and back using a sine wave
+        // Rotate hovering parts using sine function, each with a different offset
         var timeElapsed = 0f;
         while (true) {
             for (var i = 0; i < hoveringParts.Length; i++) {

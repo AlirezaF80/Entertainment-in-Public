@@ -10,9 +10,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] private AudioClip gameOverSound;
     [Header("Pause")]
     [SerializeField] private GameObject PauseScreen;
+    
+    private PlayerController playerController;
 
     private void Awake()
     {
+        playerController = FindObjectOfType<PlayerController>();
         gameOverScreen.SetActive(false);
         PauseScreen.SetActive(false);
     }
@@ -24,10 +27,17 @@ public class UIManager : MonoBehaviour
         }
     }
     #region Game Over
-    public void GameOver()
+    public void GameOver(float delay = 0)
     {
+        StartCoroutine(GameOverRoutine(delay));
+    }
+
+    private IEnumerator GameOverRoutine(float delay)
+    {
+        playerController.enabled = false;
+        yield return new WaitForSeconds(delay);
+        Time.timeScale = 0;
         gameOverScreen.SetActive(true);
-        SoundManager.instance.PlaySound(gameOverSound);
     }
 
     public void Restart()
