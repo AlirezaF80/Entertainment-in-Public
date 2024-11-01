@@ -19,16 +19,8 @@ public class UIManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (PauseScreen.activeInHierarchy)
-            {
-                PauseGame(false);
-            }
-            else
-            {
-                PauseGame(true);
-            }
+        if (Input.GetButtonDown("Pause")) {
+            PauseGame(!IsPaused());
         }
     }
     #region Game Over
@@ -41,30 +33,31 @@ public class UIManager : MonoBehaviour
     public void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Time.timeScale = 1;
     }
 
     public void MainMenu()
     {
-        SceneManager.LoadScene(0);
+        Restart();
+        // SceneManager.LoadScene(0);
     }
 
     public void Quit()
     {
-        Application.Quit();
-    #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-    #endif
+        Restart();
+    //     Application.Quit();
+    // #if UNITY_EDITOR
+    //     UnityEditor.EditorApplication.isPlaying = false;
+    // #endif
     }
     #endregion
 
-    #region Pause
-    public void PauseGame(bool status)
-    {
+    public void PauseGame(bool status) {
         PauseScreen.SetActive(status);
-        if (status)
-            Time.timeScale = 0;
-        else
-            Time.timeScale = 1;
+        Time.timeScale = status ? 0 : 1;
     }
-    #endregion
+
+    public bool IsPaused() {
+        return PauseScreen.activeInHierarchy;
+    }
 }

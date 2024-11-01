@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,8 +9,6 @@ public class SelectionArrow : MonoBehaviour
     [SerializeField] private AudioClip interactSound;
 
     private int currentPosition;
-
-
 
     private void Awake()
     {

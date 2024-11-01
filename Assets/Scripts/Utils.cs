@@ -9,8 +9,8 @@ public static class Utils {
         var camera = Camera.main;
         Vector3 leftViewportPoint = camera.WorldToViewportPoint(leftColliderPoint);
         Vector3 rightViewportPoint = camera.WorldToViewportPoint(rightColliderPoint);
-        var isInCameraBounds = leftViewportPoint.x > 0 && rightViewportPoint.x < 1 &&
-                               leftViewportPoint.y > 0 && rightViewportPoint.y < 1;
+        // check if any part of object is in camera bounds, even if half of it is in bounds
+        var isInCameraBounds = leftViewportPoint.x is < 1 and > 0 || rightViewportPoint.x is > 0 and < 1;
         return isInCameraBounds;
     }
 
