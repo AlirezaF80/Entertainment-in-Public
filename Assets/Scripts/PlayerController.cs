@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -72,7 +73,9 @@ public class PlayerController : MonoBehaviour {
         if (jumpSound != null)
             SoundManager.instance.PlaySound(jumpSound);
 
-        body.velocity = new Vector2(body.velocity.x, jumpForce);
+        body.velocity = new Vector2(
+            body.velocity.x + Mathf.Sign(transform.localScale.x) * jumpForce * 0.1f,
+            jumpForce * 0.9f);
         anim.SetTrigger("jump");
     }
 

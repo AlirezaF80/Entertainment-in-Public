@@ -187,8 +187,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7cb5e16f87d54e6bbe2de385507d033, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1.6
-  jumpForce: 6
+  moveSpeed: 1.65
+  jumpForce: 6.6
   attackCooldown: 0.5
   anim: {fileID: 7590709362986242818}
   attackSound: {fileID: 8300000, guid: c36dec3d536534e058fe7f23ea66aacc, type: 3}
