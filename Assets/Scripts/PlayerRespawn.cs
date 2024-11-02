@@ -41,6 +41,11 @@ public class PlayerRespawn : MonoBehaviour {
         return lastCheckPoint;
     }
 
+    public float GetPlayerProgress() {
+        var levelFullDistance = checkPoints[^1].position.x - checkPoints[0].position.x;
+        return maxReachedX / levelFullDistance;
+    }
+
     private void Die() {
         playerController.enabled = false; // Disable player controller
         Invoke(nameof(Respawn), delayBeforeRespawn);

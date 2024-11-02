@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -12,13 +13,17 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private GameObject[] gameOverButtons;
     [SerializeField] private GameObject[] pauseButtons;
+    [SerializeField] private Slider progressBar;
+    [SerializeField] private float progressMinValue;
     
     private PlayerController playerController;
+    private PlayerRespawn playerRespawn;
     private bool isGameOver;
     private EventSystem eventSystem;
 
     private void Awake()
     {
+        playerRespawn = FindObjectOfType<PlayerRespawn>();
         playerController = FindObjectOfType<PlayerController>();
         PauseScreen.SetActive(false);
         eventSystem = GetComponentInChildren<EventSystem>();
@@ -28,7 +33,14 @@ public class UIManager : MonoBehaviour
         if (Input.GetButtonDown("Pause") && !isGameOver) {
             PauseGame(!IsPaused());
         }
+
+        UpdateProgressBar();
     }
+
+    private void UpdateProgressBar() {
+        progressBar.value = Mathf.Max(progressMinValue, playerRespawn.GetPlayerProgress());
+    }
+
     #region Game Over
     public void GameOver(float delay = 0) {
         isGameOver = true;
