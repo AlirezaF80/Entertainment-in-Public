@@ -2404,6 +2404,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Small Boss (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 3565004546232112865, guid: a819eb8cea5a88044a6c8f610fa4b3ff, type: 3}
+      propertyPath: chaseOnlyWhenInRange
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3565004546232112866, guid: a819eb8cea5a88044a6c8f610fa4b3ff, type: 3}
       propertyPath: startingHealth
       value: 2
@@ -2486,7 +2490,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4971158099250025660, guid: a819eb8cea5a88044a6c8f610fa4b3ff, type: 3}
       propertyPath: damageAmount
-      value: 1
+      value: 1.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a819eb8cea5a88044a6c8f610fa4b3ff, type: 3}

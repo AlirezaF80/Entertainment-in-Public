@@ -7,6 +7,7 @@ public class MeleeEnemy : MonoBehaviour {
     [SerializeField] LayerMask playerLayer;
     [SerializeField] float range;
     [SerializeField] float moveSpeed;
+    [SerializeField] private bool chaseOnlyWhenInRange;
 
     private enum State {
         Idle,
@@ -63,7 +64,8 @@ public class MeleeEnemy : MonoBehaviour {
 
             case State.Chase:
                 if (canAttackPlayer) currentState = State.Attack;
-                else ChasePlayer();
+                else if (!chaseOnlyWhenInRange || boxCollider.IsInCameraBounds()) ChasePlayer();
+                else currentState = State.Idle;
                 break;
 
             case State.Attack:
